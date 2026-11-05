@@ -4,69 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M-Systems | Autodesk Revit Tools</title>
-    <style>
+
+        <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+        
+        /* Заставляем документ жестко держать размеры экрана */
         html, body {
-            height: 100%;
-            width: 100%;
-            overflow: hidden; /* Убирает прокрутку, если она не нужна */
+            width: 100vw;
+            height: 100vh;
+            min-height: 100vh;
+            overflow: hidden; /* Запрещает появление полос прокрутки */
         }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #fff;
+            display: flex;
+            justify-content: center; /* Центр по горизонтали */
+            align-items: center;     /* Центр по вертикали */
+            padding: 20px;
             
-
-   /* ... остальные ваши настройки фона ... */
-    display: flex;
-    justify-content: flex-end; /* Сдвигает вправо */
-    align-items: flex-end;     /* Сдвигает вниз */
-    padding: 40px;             /* Отступ от краев экрана */
-
-
-            
-            /* ФОНОВОЕ ИЗОБРАЖЕНИЕ НА ВЕСЬ ЭКРАН */
-            /* Укажите здесь точное имя вашей фоновой картинки */
-            background-image: url('Revit Add-In Automation Showcase.png'); 
-            background-size: cover;        /* Растягивает изображение без искажений */
-            background-position: center;   /* Центрирует картинку */
-            background-repeat: no-repeat;  /* Отменяет повторение */
+            /* ИДЕАЛЬНОЕ МАСШТАБИРОВАНИЕ ФОНА */
+            background-image: url('Revit Add-In Automation Showcase.png'); /* Укажите имя вашей картинки */
+            background-size: cover;        /* Вписывает картинку, обрезая лишнее без искажений */
+            background-position: center;   /* Картинка масштабируется ровно от центра */
+            background-repeat: no-repeat;
         }
         
-        /* ТЕМНАЯ ПЛАШКА ПОВЕРХ ФОНА */
+        /* АДАПТИВНАЯ КАРТОЧКА С ТЕКСТОМ */
         .card {
-            background: rgba(30, 30, 30, 0.90); /* Темный полупрозрачный фон */
-            backdrop-filter: blur(10px);        /* Эффект размытия под плашкой */
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
-            max-width: 460px;
-            width: 100%;
+            
+            /* Масштабируемая ширина */
+            width: 90%;            /* На смартфонах займет 90% ширины экрана */
+            max-width: 440px;      /* На больших экранах не станет шире 440px */
+            
+            /* Адаптивные отступы */
+            padding: 5vh 30px;     /* Высота отступов зависит от высоты экрана (Viewport Height) */
             text-align: center;
-            padding: 35px 25px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            z-index: 10;
         }
         
         h1 {
-            font-size: 26px;
-            margin-bottom: 12px;
+            font-size: clamp(20px, 4vw, 28px); /* Размер шрифта подстраивается под экран */
+            margin-bottom: 15px;
             font-weight: 600;
-            letter-spacing: 0.5px;
         }
         
         p {
-            font-size: 15px;
+            font-size: clamp(14px, 2.5vw, 16px); /* Текст плавно уменьшается на смартфонах */
             color: #e0e0e0;
             margin-bottom: 25px;
-            line-height: 1.6;
+            line-height: 1.5;
         }
         
-        /* СТИЛЬ КНОПКИ */
         .btn {
             display: inline-block;
             background-color: #0076ff;
@@ -76,17 +75,18 @@
             border-radius: 6px;
             font-weight: 600;
             font-size: 15px;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: background-color 0.2s;
         }
         
         .btn:hover {
             background-color: #0056b3;
         }
-        
-        .btn:active {
-            transform: scale(0.98);
-        }
     </style>
+
+
+
+
+    
 </head>
 <body>
 
