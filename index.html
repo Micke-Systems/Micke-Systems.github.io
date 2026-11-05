@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M-Systems | Autodesk Revit Tools</title>
-    <style>
+       <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
         
-        /* Задаем жесткие рамки под размер окна браузера */
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Убирает любые полосы прокрутки */
+            overflow: hidden;
             position: relative;
         }
         
@@ -23,43 +22,33 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #fff;
             display: flex;
-            
-            /* ПОЗИЦИОНИРОВАНИЕ ПЛАШКИ В ПРАВЫЙ НИЖНИЙ УГОЛ */
             justify-content: flex-end; 
             align-items: flex-end;     
-            padding: 30px;             /* Отступ плашки от краев экрана */
+            padding: 30px;
+            background-color: #1a1a1a; /* Темный фон для полей по бокам */
         }
         
-        /* СТИЛИ ДЛЯ ИДЕАЛЬНОГО МАСШТАБИРОВАНИЯ КАРТИНКИ */
         .bg-image {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            
-            /* object-fit: fill заставит картинку жестко вписываться в экран */
-            /* Если пропорции экрана сильно изменятся, она может немного сжаться, но зато НИКОГДА не обрежется */
-            object-fit: fill; 
-            
-            z-index: 1; /* Отправляем картинку на самый задний план */
+            object-fit: contain; /* Сохраняет пропорции и вписывает картинку целиком */
+            z-index: 1;
         }
         
-        /* ТЕМНАЯ ПЛАШКА В УГЛУ */
         .card {
-            background: rgba(30, 30, 30, 0.30); /* Плотный темный фон */
-            backdrop-filter: blur(10px);        /* Эффект размытия под плашкой */
+            background: rgba(30, 30, 30, 0.5);
+            backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
-            
             width: 100%;
             max-width: 400px; 
             padding: 30px 25px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            
-            z-index: 10; /* Поднимаем плашку над фоновой картинкой */
+            z-index: 10;
         }
         
         h1 {
@@ -92,7 +81,6 @@
             background-color: #0056b3;
         }
         
-        /* Адаптация под маленькие экраны смартфонов */
         @media (max-width: 480px) {
             body {
                 justify-content: center; 
@@ -104,6 +92,7 @@
             }
         }
     </style>
+
 </head>
 <body>
 
