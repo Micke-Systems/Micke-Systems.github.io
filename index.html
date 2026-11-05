@@ -25,7 +25,7 @@
             justify-content: flex-end; 
             align-items: flex-end;     
             padding: 30px;
-            background-color: #1a1a1a; /* Темный фон для полей по бокам */
+            background-color: #1e1e1e; /* Темный фон для полей по бокам */
         }
         
         .bg-image {
@@ -38,31 +38,37 @@
             z-index: 1;
         }
         
-        .card {
-            background: rgba(30, 30, 30, 0.5);
+     .card {
+            background: rgba(30, 30, 30, 0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
-            width: 100%;
-            max-width: 400px; 
-            padding: 30px 25px;
+            
+            /* МАСШТАБИРОВАНИЕ ОКНА: */
+            width: 25vw;         /* Ширина карточки ВСЕГДА составляет 25% от ширины экрана */
+            min-width: 280px;    /* Но она не сожмется меньше 280px, чтобы текст оставался читаемым */
+            max-width: 380px;    /* И не станет огромной на гигантских мониторах */
+            
+            /* Адаптивные внутренние отступы от высоты экрана */
+            padding: 3vh 20px;   
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             z-index: 10;
         }
+
         
-        h1 {
-            font-size: 24px;
-            margin-bottom: 12px;
+    h1 {
+            font-size: clamp(18px, 1.8vw, 24px); /* Уменьшается на маленьком экране */
+            margin-bottom: 1vh;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
         
         p {
-            font-size: 14px;
+            font-size: clamp(12px, 1.1vw, 14px); /* Сжимается пропорционально окну */
             color: #e0e0e0;
-            margin-bottom: 25px;
-            line-height: 1.5;
+            margin-bottom: 2vh;
+            line-height: 1.4;
         }
         
         .btn {
@@ -70,12 +76,14 @@
             background-color: #0076ff;
             color: #fff;
             text-decoration: none;
-            padding: 12px 30px;
+            padding: 1vh 2vw; /* Высота и ширина кнопки зависят от размера экрана */
+            min-padding: 8px 20px;
             border-radius: 6px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: clamp(11px, 1vw, 14px);
             transition: background-color 0.2s;
         }
+
         
         .btn:hover {
             background-color: #0056b3;
