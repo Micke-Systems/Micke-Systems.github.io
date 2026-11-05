@@ -4,63 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M-Systems | Autodesk Revit Tools</title>
-
-        <style>
+    <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
         
-        /* Заставляем документ жестко держать размеры экрана */
+        /* Фиксируем границы сайта под размер экрана */
         html, body {
-            width: 100vw;
-            height: 100vh;
-            min-height: 100vh;
-            overflow: hidden; /* Запрещает появление полос прокрутки */
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Убирает все полосы прокрутки */
         }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #fff;
             display: flex;
-            justify-content: center; /* Центр по горизонтали */
-            align-items: center;     /* Центр по вертикали */
-            padding: 20px;
             
-            /* ИДЕАЛЬНОЕ МАСШТАБИРОВАНИЕ ФОНА */
-            background-image: url('Revit Add-In Automation Showcase.png'); /* Укажите имя вашей картинки */
-            background-size: cover;        /* Вписывает картинку, обрезая лишнее без искажений */
-            background-position: center;   /* Картинка масштабируется ровно от центра */
+            /* СДВИГАЕМ ОКНО В ПРАВЫЙ НИЖНИЙ УГОЛ */
+            justify-content: flex-end; /* Выравнивание по правому краю */
+            align-items: flex-end;     /* Выравнивание по нижнему краю */
+            padding: 30px;             /* Отступ плашки от краев экрана */
+            
+            /* АВТОМАТИЧЕСКОЕ МАСШТАБИРОВАНИЕ ФОНА */
+            /* Замените bg.html на точное имя вашей картинки, если оно другое */
+            background-image: url('Revit Add-In Automation Showcase.png'); 
+            background-size: cover;        /* Картинка масштабируется и заполняет 100% экрана без искажений */
+            background-position: center;   /* Центрирование изображения при сжатии */
             background-repeat: no-repeat;
         }
         
-        /* АДАПТИВНАЯ КАРТОЧКА С ТЕКСТОМ */
+        /* ТЕМНАЯ ПЛАШКА В УГЛУ */
         .card {
-            background: rgba(30, 30, 30, 0.3);
-            backdrop-filter: blur(10px);
+            background: rgba(30, 30, 30, 0.5); /* Более плотный темный фон */
+            backdrop-filter: blur(10px);        /* Размытие фона за плашкой */
             -webkit-backdrop-filter: blur(10px);
+            
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 3px;
+            border-radius: 12px;
             
-            /* Масштабируемая ширина */
-            width: 90%;            /* На смартфонах займет 90% ширины экрана */
-            max-width: 440px;      /* На больших экранах не станет шире 440px */
-            
-            /* Адаптивные отступы */
-            padding: 5vh 30px;     /* Высота отступов зависит от высоты экрана (Viewport Height) */
-            text-align: center;
+            /* Адаптивные размеры плашки */
+            width: 100%;
+            max-width: 400px; /* Ограничиваем максимальную ширину в углу */
+            padding: 30px 25px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
         
         h1 {
-            font-size: clamp(20px, 4vw, 28px); /* Размер шрифта подстраивается под экран */
-            margin-bottom: 15px;
+            font-size: 24px;
+            margin-bottom: 12px;
             font-weight: 600;
+            letter-spacing: 0.5px;
         }
         
         p {
-            font-size: clamp(14px, 2.5vw, 16px); /* Текст плавно уменьшается на смартфонах */
+            font-size: 14px;
             color: #e0e0e0;
             margin-bottom: 25px;
             line-height: 1.5;
@@ -74,23 +74,29 @@
             padding: 12px 30px;
             border-radius: 6px;
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
             transition: background-color 0.2s;
         }
         
         .btn:hover {
             background-color: #0056b3;
         }
+        
+        /* Смартфонная адаптация: если экран слишком маленький */
+        @media (max-width: 480px) {
+            body {
+                justify-content: center; /* На телефонах центрируем плашку */
+                align-items: center;
+                padding: 15px;
+            }
+            .card {
+                max-width: 100%;
+            }
+        }
     </style>
-
-
-
-
-    
 </head>
 <body>
 
-    <!-- Центральный блок с текстом -->
     <div class="card">
         <h1>M-Systems</h1>
         <p>Приветствуем! Сайт находится в разработке. Скоро здесь появится подробная информация о наших плагинах, инструментах автоматизации и решениях для Autodesk Revit.</p>
