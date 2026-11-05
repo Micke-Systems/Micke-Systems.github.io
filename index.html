@@ -11,11 +11,12 @@
             padding: 0;
         }
         
-        /* Фиксируем границы сайта под размер экрана */
+        /* Задаем жесткие рамки под размер окна браузера */
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Убирает все полосы прокрутки */
+            overflow: hidden; /* Убирает любые полосы прокрутки */
+            position: relative;
         }
         
         body {
@@ -23,33 +24,42 @@
             color: #fff;
             display: flex;
             
-            /* СДВИГАЕМ ОКНО В ПРАВЫЙ НИЖНИЙ УГОЛ */
-            justify-content: flex-end; /* Выравнивание по правому краю */
-            align-items: flex-end;     /* Выравнивание по нижнему краю */
+            /* ПОЗИЦИОНИРОВАНИЕ ПЛАШКИ В ПРАВЫЙ НИЖНИЙ УГОЛ */
+            justify-content: flex-end; 
+            align-items: flex-end;     
             padding: 30px;             /* Отступ плашки от краев экрана */
+        }
+        
+        /* СТИЛИ ДЛЯ ИДЕАЛЬНОГО МАСШТАБИРОВАНИЯ КАРТИНКИ */
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             
-            /* АВТОМАТИЧЕСКОЕ МАСШТАБИРОВАНИЕ ФОНА */
-            /* Замените bg.html на точное имя вашей картинки, если оно другое */
-            background-image: url('Revit Add-In Automation Showcase.png'); 
-            background-size: cover;        /* Картинка масштабируется и заполняет 100% экрана без искажений */
-            background-position: center;   /* Центрирование изображения при сжатии */
-            background-repeat: no-repeat;
+            /* object-fit: fill заставит картинку жестко вписываться в экран */
+            /* Если пропорции экрана сильно изменятся, она может немного сжаться, но зато НИКОГДА не обрежется */
+            object-fit: fill; 
+            
+            z-index: 1; /* Отправляем картинку на самый задний план */
         }
         
         /* ТЕМНАЯ ПЛАШКА В УГЛУ */
         .card {
-            background: rgba(30, 30, 30, 0.5); /* Более плотный темный фон */
-            backdrop-filter: blur(10px);        /* Размытие фона за плашкой */
+            background: rgba(30, 30, 30, 0.30); /* Плотный темный фон */
+            backdrop-filter: blur(10px);        /* Эффект размытия под плашкой */
             -webkit-backdrop-filter: blur(10px);
             
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
             
-            /* Адаптивные размеры плашки */
             width: 100%;
-            max-width: 400px; /* Ограничиваем максимальную ширину в углу */
+            max-width: 400px; 
             padding: 30px 25px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            
+            z-index: 10; /* Поднимаем плашку над фоновой картинкой */
         }
         
         h1 {
@@ -82,10 +92,10 @@
             background-color: #0056b3;
         }
         
-        /* Смартфонная адаптация: если экран слишком маленький */
+        /* Адаптация под маленькие экраны смартфонов */
         @media (max-width: 480px) {
             body {
-                justify-content: center; /* На телефонах центрируем плашку */
+                justify-content: center; 
                 align-items: center;
                 padding: 15px;
             }
@@ -97,6 +107,11 @@
 </head>
 <body>
 
+    <!-- ФОНОВАЯ КАРТИНКА ТЕПЕРЬ ТУТ -->
+    <!-- реальное имя ниже -->
+    <img src="Revit Add-In Automation Showcase.png" alt="Autodesk Revit Custom Tools" class="bg-image">
+
+    <!-- ИНФОРМАЦИОННАЯ КАРТОЧКА -->
     <div class="card">
         <h1>M-Systems</h1>
         <p>Приветствуем! Сайт находится в разработке. Скоро здесь появится подробная информация о наших плагинах, инструментах автоматизации и решениях для Autodesk Revit.</p>
