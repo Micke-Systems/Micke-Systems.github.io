@@ -4,30 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M-Systems | Autodesk Revit Tools</title>
-       <style>
+    <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            position: relative;
+
+        html {
+            /* Прокрутка "прилипает" к каждому экрану */
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #fff;
-            display: flex;
-            justify-content: flex-end; 
-            align-items: flex-end;     
-            padding: 30px;
             background-color: #009dff; /* фон для полей по бокам */
         }
-        
+
+        /* Каждый экран занимает всю высоту окна */
+        .screen {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh; /* правильная высота на мобильных */
+            scroll-snap-align: start;
+            overflow: hidden;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            padding: 30px;
+        }
+
         .bg-image {
             position: absolute;
             top: 0;
@@ -37,61 +46,93 @@
             object-fit: contain; /* Сохраняет пропорции и вписывает картинку целиком */
             z-index: 1;
         }
-        
-     .card {
+
+        /* Появление картинки при прокрутке */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px) scale(0.97);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Подсказка "листайте вниз" на первом экране */
+        .scroll-hint {
+            position: absolute;
+            left: 50%;
+            bottom: 20px;
+            transform: translateX(-50%);
+            z-index: 5;
+            font-size: 28px;
+            opacity: 0.8;
+            animation: bounce 1.6s infinite;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50%      { transform: translate(-50%, 10px); }
+        }
+
+        .card {
+            position: relative;
             background: rgba(30, 30, 30, 0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
-            
-            /* МАСШТАБИРОВАНИЕ ОКНА: */
-            width: 25vw;         /* Ширина карточки ВСЕГДА составляет 25% от ширины экрана */
-            min-width: 280px;    /* Но она не сожмется меньше 280px, чтобы текст оставался читаемым */
-            max-width: 380px;    /* И не станет огромной на гигантских мониторах */
-            
-            /* Адаптивные внутренние отступы от высоты экрана */
-            padding: 3vh 20px;   
+            width: 25vw;
+            min-width: 280px;
+            max-width: 380px;
+            padding: 3vh 20px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             z-index: 10;
         }
 
-        
-    h1 {
-            font-size: clamp(18px, 1.8vw, 24px); /* Уменьшается на маленьком экране */
+        h1 {
+            font-size: clamp(18px, 1.8vw, 24px);
             margin-bottom: 1vh;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
-        
+
         p {
-            font-size: clamp(12px, 1.1vw, 14px); /* Сжимается пропорционально окну */
+            font-size: clamp(12px, 1.1vw, 14px);
             color: #e0e0e0;
             margin-bottom: 2vh;
             line-height: 1.4;
         }
-        
+
         .btn {
             display: inline-block;
             background-color: #0076ff;
             color: #fff;
             text-decoration: none;
-            padding: 1vh 2vw; /* Высота и ширина кнопки зависят от размера экрана */
-            min-padding: 8px 20px;
+            padding: max(1vh, 8px) max(2vw, 20px);
             border-radius: 6px;
             font-weight: 600;
             font-size: clamp(11px, 1vw, 14px);
             transition: background-color 0.2s;
         }
 
-        
         .btn:hover {
             background-color: #0056b3;
         }
-        
+
+        /* Если пользователь отключил анимации в системе */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1; transform: none; transition: none; }
+            .scroll-hint { animation: none; }
+        }
+
         @media (max-width: 480px) {
-            body {
-                justify-content: center; 
+            .screen {
+                justify-content: center;
                 align-items: center;
                 padding: 15px;
             }
@@ -100,22 +141,43 @@
             }
         }
     </style>
-
 </head>
 <body>
 
-    <!-- ФОНОВАЯ КАРТИНКА ТЕПЕРЬ ТУТ -->
-    <!-- реальное имя ниже -->
-    <img src="Revit Add-In Automation Showcase.png" alt="Autodesk Revit Custom Tools" class="bg-image">
+    <!-- ЭКРАН 1: первая картинка -->
+    <section class="screen" id="screen1">
+        <img src="Michael Stoler Architectural Portfolio.png" alt="Autodesk Revit Custom Tools" class="bg-image">
+        <a href="#screen2" class="scroll-hint" aria-label="Прокрутить вниз">&#8595;</a>
 
-    <!-- ИНФОРМАЦИОННАЯ КАРТОЧКА -->
-  <!--
-    <div class="card">
-        <h1>M-Systems</h1>
-        <p>Приветствуем! Сайт находится в разработке. Скоро здесь появится подробная информация о наших плагинах, инструментах автоматизации и решениях для Autodesk Revit.</p>
-        
-        <a href="mailto:info@example.com" class="btn">Связаться с нами</a>
-    </div>
--->
+        <!-- ИНФОРМАЦИОННАЯ КАРТОЧКА -->
+        <!--
+        <div class="card">
+            <h1>M-Systems</h1>
+            <p>Приветствуем! Сайт находится в разработке. Скоро здесь появится подробная информация о наших плагинах, инструментах автоматизации и решениях для Autodesk Revit.</p>
+            <a href="mailto:info@example.com" class="btn">Связаться с нами</a>
+        </div>
+        -->
+    </section>
+
+    <!-- ЭКРАН 2: вторая картинка, появляется при прокрутке -->
+    <!-- замените image2.png на реальное имя файла -->
+    <section class="screen" id="screen2">
+        <img src="Revit Add-In Automation Showcase.png" alt="Autodesk Revit Custom Tools" class="bg-image reveal">
+    </section>
+
+    <script>
+        // Плавно показываем картинку, когда она попадает на экран
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    entry.target.classList.remove('visible'); // уберите эту строку, если анимация нужна только один раз
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
 </body>
 </html>
