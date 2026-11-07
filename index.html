@@ -132,6 +132,17 @@
             .scroll-hint { animation: none; }
         }
 
+        /* ===== МОБИЛЬНАЯ ВЕРСИЯ (телефоны и узкие экраны) ===== */
+        @media (max-width: 768px) {
+            .screen {
+                padding: 15px;
+            }
+            .scroll-hint {
+                bottom: 12px;
+                font-size: 24px;
+            }
+        }
+
         @media (max-width: 480px) {
             .screen {
                 justify-content: center;
@@ -147,8 +158,12 @@
 <body>
 
     <!-- ЭКРАН 1: первая картинка -->
+    <!-- На экранах до 768px показывается мобильная картинка, на компьютере — обычная -->
     <section class="screen" id="screen1">
-        <img src="Michael Stoler Architectural Portfolio.png" alt="Autodesk Revit Custom Tools" class="bg-image">
+        <picture>
+            <source media="(max-width: 768px)" srcset="Facade Engineering Portfolio mob.png">
+            <img src="Michael Stoler Architectural Portfolio.png" alt="Autodesk Revit Custom Tools" class="bg-image">
+        </picture>
         <a href="#screen2" class="scroll-hint" aria-label="Прокрутить вниз">&#8595;</a>
 
         <!-- ИНФОРМАЦИОННАЯ КАРТОЧКА -->
@@ -162,9 +177,11 @@
     </section>
 
     <!-- ЭКРАН 2: вторая картинка, появляется при прокрутке -->
-    <!-- замените image2.png на реальное имя файла -->
     <section class="screen" id="screen2">
-        <img src="Revit Add-In Automation Showcase.png" alt="Autodesk Revit Custom Tools" class="bg-image reveal">
+        <picture>
+            <source media="(max-width: 768px)" srcset="revit_mobile_preview.png">
+            <img src="Revit Add-In Automation Showcase.png" alt="Autodesk Revit Custom Tools" class="bg-image reveal">
+        </picture>
     </section>
 
     <script>
@@ -177,8 +194,10 @@
                     entry.target.classList.remove('visible'); // уберите эту строку, если анимация нужна только один раз
                 }
             });
-        }, { threshold: 0.3 });
-
+        }, {
+            // На телефоне картинка очень длинная, поэтому показываем её, как только видно 5%
+            threshold: window.matchMedia('(max-width: 768px)').matches ? 0.05 : 0.3
+        });
         document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     </script>
 </body>
