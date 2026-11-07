@@ -134,8 +134,31 @@
 
         /* ===== МОБИЛЬНАЯ ВЕРСИЯ (телефоны и узкие экраны) ===== */
         @media (max-width: 768px) {
+            /* Отключаем "прилипание", чтобы длинную картинку можно было свободно листать */
+            html {
+                scroll-snap-type: none;
+            }
             .screen {
                 padding: 15px;
+            }
+
+            /* Экран 2: высокая картинка по ширине экрана, дальше прокрутка */
+            #screen2 {
+                height: auto;
+                padding: 0;
+                display: block;
+            }
+            #screen2 picture {
+                display: block;
+                width: 100%;
+            }
+            #screen2 .bg-image {
+                position: static !important;
+                display: block;
+                width: 100% !important;
+                height: auto !important;
+                max-width: none;
+                object-fit: fill !important;
             }
             .scroll-hint {
                 bottom: 12px;
@@ -161,7 +184,7 @@
     <!-- На экранах до 768px показывается мобильная картинка, на компьютере — обычная -->
     <section class="screen" id="screen1">
         <picture>
-            <source media="(max-width: 768px)" srcset="Facade Engineering Portfolio mob.png">
+            <source media="(max-width: 768px)" srcset="Facade%20Engineering%20Portfolio%20mob.png">
             <img src="Michael Stoler Architectural Portfolio.png" alt="Autodesk Revit Custom Tools" class="bg-image">
         </picture>
         <a href="#screen2" class="scroll-hint" aria-label="Прокрутить вниз">&#8595;</a>
@@ -198,6 +221,7 @@
             // На телефоне картинка очень длинная, поэтому показываем её, как только видно 5%
             threshold: window.matchMedia('(max-width: 768px)').matches ? 0.05 : 0.3
         });
+
         document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     </script>
 </body>
