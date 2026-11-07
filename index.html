@@ -1,288 +1,185 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Michael Stoler | Facade Engineering & BIM Automation</title>
-
+    <title>M-Systems | Autodesk Revit Tools</title>
+    <link rel="icon" type="image/png" href="cat.png">
+    <link rel="apple-touch-icon" href="logo-180.png">
     <style>
-        @font-face {
-            font-family: "ISOCPEUR";
-            src: url("fonts/ISOCPEUR.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         html {
+            /* Прокрутка "прилипает" к каждому экрану */
+            scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f8;
-            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #fff;
+            background-color: #009dff; /* фон для полей по бокам */
         }
 
-        /* MAIN HERO */
-
-        .hero {
+        /* Каждый экран занимает всю высоту окна */
+        .screen {
             position: relative;
             width: 100%;
-            min-height: 100vh;
-            min-height: 100dvh;
+            height: 100vh;
+            height: 100dvh; /* правильная высота на мобильных */
+            scroll-snap-align: start;
             overflow: hidden;
-            background: #dce5ec;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            padding: 30px;
         }
 
-        .hero-image {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            object-position: center;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                90deg,
-                rgba(5, 22, 38, 0.48) 0%,
-                rgba(5, 22, 38, 0.16) 48%,
-                rgba(5, 22, 38, 0.02) 100%
-            );
-        }
-
-        /* NAVIGATION */
-
-        .navigation {
+        .bg-image {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 34px 6%;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            z-index: 2;
+            height: 100%;
+            object-fit: contain; /* Сохраняет пропорции и вписывает картинку целиком */
+            z-index: 1;
         }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 38px;
+        /* Появление картинки при прокрутке */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px) scale(0.97);
+            transition: opacity 0.9s ease, transform 0.9s ease;
         }
 
-        .nav-links a {
-            font-family: "ISOCPEUR", Arial, sans-serif;
-            font-size: 19px;
-            letter-spacing: 1.5px;
-            color: #ffffff;
-            text-decoration: none;
-            transition: opacity 0.25s ease;
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
         }
 
-        .nav-links a:hover {
-            opacity: 0.65;
-        }
-
-        /* HERO TEXT */
-
-        .hero-content {
-            position: absolute;
-            left: 8%;
-            bottom: 13%;
-            z-index: 2;
-            max-width: 760px;
-        }
-
-        .hero-name {
-            font-family: "ISOCPEUR", Arial, sans-serif;
-            font-size: clamp(48px, 7vw, 96px);
-            font-weight: normal;
-            letter-spacing: 3px;
-            line-height: 1;
-            margin-bottom: 22px;
-            text-shadow: 0 2px 18px rgba(0, 0, 0, 0.25);
-        }
-
-        .hero-title {
-            font-size: clamp(16px, 2vw, 23px);
-            line-height: 1.5;
-            letter-spacing: 1.2px;
-            font-weight: 400;
-            max-width: 650px;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
-        }
-
-        .hero-subtitle {
-            margin-top: 13px;
-            font-size: 15px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.85);
-        }
-
-        /* SCROLL INDICATOR */
-
+        /* Подсказка "листайте вниз" на первом экране */
         .scroll-hint {
             position: absolute;
-            bottom: 28px;
             left: 50%;
+            bottom: 20px;
             transform: translateX(-50%);
-            z-index: 2;
-            color: white;
-            font-size: 30px;
-            text-decoration: none;
+            z-index: 5;
+            font-size: 28px;
             opacity: 0.8;
-            animation: float 2s infinite;
+            animation: bounce 1.6s infinite;
+            text-decoration: none;
+            color: #fff;
         }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translate(-50%, 0);
-            }
-            50% {
-                transform: translate(-50%, 8px);
-            }
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50%      { transform: translate(-50%, 10px); }
         }
 
-        /* TEMPORARY SECOND SCREEN */
-
-        .next-screen {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #edf1f4;
-            color: #243746;
-            text-align: center;
-            padding: 60px 24px;
+        .card {
+            position: relative;
+            background: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            width: 25vw;
+            min-width: 280px;
+            max-width: 380px;
+            padding: 3vh 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 10;
         }
 
-        .next-screen h2 {
-            font-family: "ISOCPEUR", Arial, sans-serif;
-            font-size: clamp(32px, 5vw, 56px);
-            font-weight: normal;
+        h1 {
+            font-size: clamp(18px, 1.8vw, 24px);
+            margin-bottom: 1vh;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
-        /* MOBILE */
-
-        @media (max-width: 700px) {
-            .navigation {
-                justify-content: center;
-                padding: 24px 16px;
-            }
-
-            .nav-links {
-                gap: 16px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .nav-links a {
-                font-size: 15px;
-            }
-
-            .hero-content {
-                left: 7%;
-                right: 7%;
-                bottom: 12%;
-            }
-
-            .hero-name {
-                font-size: clamp(42px, 11vw, 64px);
-                letter-spacing: 1px;
-            }
-
-            .hero-title {
-                font-size: 16px;
-            }
-
-            .hero-subtitle {
-                font-size: 12px;
-                line-height: 1.6;
-            }
+        p {
+            font-size: clamp(12px, 1.1vw, 14px);
+            color: #e0e0e0;
+            margin-bottom: 2vh;
+            line-height: 1.4;
         }
 
+        .btn {
+            display: inline-block;
+            background-color: #0076ff;
+            color: #fff;
+            text-decoration: none;
+            padding: max(1vh, 8px) max(2vw, 20px);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: clamp(11px, 1vw, 14px);
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Если пользователь отключил анимации в системе */
         @media (prefers-reduced-motion: reduce) {
-            html {
-                scroll-behavior: auto;
-            }
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1; transform: none; transition: none; }
+            .scroll-hint { animation: none; }
+        }
 
-            .scroll-hint {
-                animation: none;
+        @media (max-width: 480px) {
+            .screen {
+                justify-content: center;
+                align-items: center;
+                padding: 15px;
+            }
+            .card {
+                max-width: 100%;
             }
         }
     </style>
 </head>
-
 <body>
 
-    <main>
-        <section class="hero" id="home">
+    <!-- ЭКРАН 1: первая картинка -->
+    <section class="screen" id="screen1">
+        <img src="Michael Stoler Architectural Portfolio.png" alt="Autodesk Revit Custom Tools" class="bg-image">
+        <a href="#screen2" class="scroll-hint" aria-label="Прокрутить вниз">&#8595;</a>
 
-            <img
-                src="Michael Stoler Architectural Portfolio.png"
-                alt="Architectural portfolio panorama"
-                class="hero-image"
-            >
+        <!-- ИНФОРМАЦИОННАЯ КАРТОЧКА -->
+        <!--
+        <div class="card">
+            <h1>M-Systems</h1>
+            <p>Приветствуем! Сайт находится в разработке. Скоро здесь появится подробная информация о наших плагинах, инструментах автоматизации и решениях для Autodesk Revit.</p>
+            <a href="mailto:info@example.com" class="btn">Связаться с нами</a>
+        </div>
+        -->
+    </section>
 
-            <div class="hero-overlay"></div>
+    <!-- ЭКРАН 2: вторая картинка, появляется при прокрутке -->
+    <!-- замените image2.png на реальное имя файла -->
+    <section class="screen" id="screen2">
+        <img src="Revit Add-In Automation Showcase.png" alt="Autodesk Revit Custom Tools" class="bg-image reveal">
+    </section>
 
-            <nav class="navigation">
-                <div class="nav-links">
-                    <a href="#about">ABOUT</a>
-                    <a href="#projects">PROJECTS</a>
-                    <a href="#automation">REVIT AUTOMATION</a>
-                    <a href="#contact">CONTACT</a>
-                </div>
-            </nav>
+    <script>
+        // Плавно показываем картинку, когда она попадает на экран
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    entry.target.classList.remove('visible'); // уберите эту строку, если анимация нужна только один раз
+                }
+            });
+        }, { threshold: 0.3 });
 
-            <div class="hero-content">
-                <h1 class="hero-name">MICHAEL STOLER</h1>
-
-                <p class="hero-title">
-                    Facade Engineering & Technical Management
-                </p>
-
-                <p class="hero-subtitle">
-                    Curtain Walls · Building Envelopes · BIM · Revit API
-                </p>
-            </div>
-
-            <a href="#about" class="scroll-hint" aria-label="Scroll down">
-                ↓
-            </a>
-
-        </section>
-
-        <section class="next-screen" id="about">
-            <h2>ABOUT & EXPERTISE</h2>
-        </section>
-
-        <section class="next-screen" id="projects">
-            <h2>SELECTED PROJECTS</h2>
-        </section>
-
-        <section class="next-screen" id="automation">
-            <h2>REVIT AUTOMATION</h2>
-        </section>
-
-        <section class="next-screen" id="contact">
-            <h2>CONTACT</h2>
-        </section>
-    </main>
-
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
 </body>
 </html>
