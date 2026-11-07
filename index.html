@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M-Systems | Autodesk Revit Tools</title>
-    <link rel="icon" type="image/png" href="cat.png">
-    <link rel="apple-touch-icon" href="logo-180.png">
+    <link rel="icon" type="image/png" href="logo.png">
     <style>
         * {
             box-sizing: border-box;
@@ -132,23 +131,41 @@
             .scroll-hint { animation: none; }
         }
 
-        @media (max-width: 480px) {
+        /* ===== МОБИЛЬНАЯ ВЕРСИЯ (телефоны) ===== */
+        @media (max-width: 768px) {
             .screen {
                 justify-content: center;
                 align-items: center;
                 padding: 15px;
             }
             .card {
+                width: 100%;
                 max-width: 100%;
+                min-width: 0;
+                padding: 20px;
+            }
+            /* На телефоне шрифты крупнее, чем дала бы формула от ширины экрана */
+            h1 { font-size: 22px; }
+            p { font-size: 16px; }
+            .btn {
+                font-size: 16px;
+                padding: 12px 24px;
+                display: block;
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ЭКРАН 1: первая картинка -->
+    <!-- ЭКРАН 1 -->
     <section class="screen" id="screen1">
-        <img src="Michael Stoler Architectural Portfolio.png" alt="Autodesk Revit Custom Tools" class="bg-image">
+        <picture>
+            <!-- картинка для телефона -->
+            <source media="(max-width: 768px)" srcset="Facade Engineering Portfolio mob.png">
+            <!-- картинка для компьютера -->
+            <img src="Revit Add-In Automation Showcase.png" alt="Autodesk Revit Custom Tools" class="bg-image">
+        </picture>
         <a href="#screen2" class="scroll-hint" aria-label="Прокрутить вниз">&#8595;</a>
 
         <!-- ИНФОРМАЦИОННАЯ КАРТОЧКА -->
@@ -161,10 +178,14 @@
         -->
     </section>
 
-    <!-- ЭКРАН 2: вторая картинка, появляется при прокрутке -->
-    <!-- замените image2.png на реальное имя файла -->
+    <!-- ЭКРАН 2 -->
     <section class="screen" id="screen2">
-        <img src="Revit Add-In Automation Showcase.png" alt="Autodesk Revit Custom Tools" class="bg-image reveal">
+        <picture>
+            <!-- картинка для телефона -->
+            <source media="(max-width: 768px)" srcset="revit_mobile_preview.png">
+            <!-- картинка для компьютера -->
+            <img src="image2.png" alt="Autodesk Revit Custom Tools" class="bg-image reveal">
+        </picture>
     </section>
 
     <script>
